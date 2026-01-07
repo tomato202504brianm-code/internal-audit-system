@@ -1,31 +1,45 @@
 <div class="login-container">
   <div class="login-card">
     <h2 class="title">Sign In</h2>
+    
+    <form class="form-group" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input
+            id="username"
+            type="text"
+            placeholder="Enter username"
+            formControlName="username"
+            required
+            />
+        </div>
+        @if (showRequired('username')) {
+          <p class="error alert">Username is required.</p>
+        }
 
-    <form>
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input
-          id="username"
-          type="text"
-          placeholder="Enter username"
-          required
-        />
-      </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input
+            id="password"
+            type="password"
+            placeholder="Enter password"
+            formControlName="password"
+            required
+            />
+        </div>
+        @if (showRequired('password')) {
+          <p class="error alert">Password is required.</p>
+        }
 
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input
-          id="password"
-          type="password"
-          placeholder="Enter password"
-          required
-        />
-      </div>
+        @if (errorMessage()) {
+            <p class="error alert">
+                {{ errorMessage() }}
+            </p>
+        }
 
-      <button type="submit" class="login-button">
-        Login
-      </button>
+        <button type="submit" class="login-button" [disabled]="loading()">
+            {{ loading() ? 'Logging in...' : 'Login' }}
+        </button>
     </form>
 
     <p class="hint">
