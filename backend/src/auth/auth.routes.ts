@@ -29,9 +29,7 @@ router.post('/login', async (req, res) => {
     // We use status 200 (OK) for successful login.
     return res.status(200).json({
         message: 'ログイン成功',
-        body: {
-            user: { username }
-        }
+        user: { username }
     });
 });
 
