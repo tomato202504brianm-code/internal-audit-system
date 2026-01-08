@@ -61,6 +61,7 @@ export class Login {
     this.authService.login(username, password).subscribe({
       next: (res) => {
         console.log(res.body.user.username);
+        console.log(res.message);
         this.onLoginSuccess();
       },
       error: (err) => {
