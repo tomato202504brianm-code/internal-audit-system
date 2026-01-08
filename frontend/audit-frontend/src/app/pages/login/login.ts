@@ -62,6 +62,7 @@ export class Login {
       next: (res) => {
         console.log(res.user.username);
         console.log(res.message);
+        // localStorage.setItem('token', res.token); //　ログイン成功したらこのtokenを保存（backendに認証用）、 logoutの時はlocalStorage.removeItem('token');で削除
         this.onLoginSuccess();
       },
       error: (err) => {
