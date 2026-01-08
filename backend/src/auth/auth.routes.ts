@@ -1,27 +1,22 @@
 import { Router } from 'express';
-import { hashPassword,comparePassword } from "../utils/password";
+import { hashPassword, comparePassword } from "../utils/password";
+import { findUserByUsername } from '../repositories/user.repository';
 
 
 const router = Router();
 
-const fakeUser = {
-    username: 'testuser',
-    // This is a bcrypt hash for the password 'password123'
-    passwordHash: '$2a$10$22mqrzn.Cipbzl0bCh7GbOVcmz5.eQoURzyE9aw8PR4M3eckYbm6K'
-};
-
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
-    // 1. Guard Clause: Check if user exists
-    // Inside your login route
-if (username !== fakeUser.username) {
-    return res.status(401).json({
-        message: 'ユーザー名を入力してください',
-    });
-}
+
+    const user = await findUserByUsername(username);
+    if (!user) {
+        return res.status(401).json({
+            message: 'ユーザーが見つかりません',
+        });
+    }
 
     // 2. Compare the password
-    const isMatch = comparePassword(password, fakeUser.passwordHash);
+    const isMatch =await comparePassword(password, user.password_hash);
 
     // 3. Guard Clause: If the password DOES NOT match, exit with error
     if (!isMatch) {
